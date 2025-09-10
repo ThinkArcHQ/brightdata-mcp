@@ -31,6 +31,7 @@ jobs:
         with:
           appSourcePath: .                           # Path to your app (GitHub repo root)
           containerAppName: brightdata-mcp          # Name of your Container App
+          containerName: brightdata-mcp   
           resourceGroup: rg-mcp-github-deployer-prod
           imageToBuild: ${{ secrets.BRIGHTDATAMCP_REGISTRY_URL }}/brightdata-mcp:${{ github.sha }}
           registryUsername: ${{ secrets.BRIGHTDATAMCP_REGISTRY_USERNAME }}
@@ -39,3 +40,4 @@ jobs:
           environmentVariables: |
             NODE_ENV=production
             PORT=80
+
