@@ -1,28 +1,19 @@
 FROM node:22.12-alpine AS builder
 
-
-COPY . /app
 WORKDIR /app
-
-
-RUN --mount=type=cache,target=/root/.npm npm install
+COPY package*.json ./
+RUN npm install
+COPY . .
 
 FROM node:22-alpine AS release
 
 WORKDIR /app
-
-
-COPY --from=builder /app/server.js /app/
-COPY --from=builder /app/browser_tools.js /app/
-COPY --from=builder /app/browser_session.js /app/
-COPY --from=builder /app/package.json /app/
-COPY --from=builder /app/package-lock.json /app/
-
+COPY --from=builder /app /app
 
 ENV NODE_ENV=production
-
+ENV PORT=80
 
 RUN npm ci --ignore-scripts --omit-dev
 
-
+EXPOSE 80
 ENTRYPOINT ["node", "server.js"]
